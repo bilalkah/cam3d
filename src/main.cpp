@@ -10,6 +10,7 @@
  */
 
 #include <cstdlib>
+#include <rasterizer.hpp>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_render.h>
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
 
     // Create a frame buffer
     auto frameBuffer = std::make_unique<cam3d::FrameBuffer>(width, height);
-
+    auto rasterizer = std::make_unique<cam3d::Rasterizer>(width, height);
     // SDL Texture
     SDL_Texture *texture =
         SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height);
@@ -73,6 +74,9 @@ int main(int argc, char *argv[])
         cam3d::Vector3<float>(-1.0f, -1.0f, -1.0f), cam3d::Vector3<float>(0.7f, -0.5f, 2.0f),
         cam3d::Vector3<float>(-0.7f, -1.0f, -2.0f),
     };
+
+    cam3d::Vector3<float> start(-50.0f, 120.0f, 0.0f);
+    cam3d::Vector3<float> end(900.0f, 200.0f, 0.0f);
 
     bool running = true;
     SDL_Event event;
@@ -104,6 +108,11 @@ int main(int argc, char *argv[])
             cam3d::Vector3<float> projected = cam3d::utility::projectOrtographic(point, width, height);
             frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color2);
         }
+
+        rasterizer->drawLine(cam3d::utility::projectOrtographic(points[1], width, height),
+                             cam3d::utility::projectOrtographic(points[3], width, height), *frameBuffer, color2);
+
+        rasterizer->drawLine(start, end, *frameBuffer, color2);
 
         // Convert to texture
         SDL_UpdateTexture(texture, NULL, frameBuffer->getBuffer().data(), width * sizeof(cam3d::ARGB));

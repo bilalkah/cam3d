@@ -122,30 +122,28 @@ template <typename T> class Vector3
         return !(*this == other);
     }
 
-    // Setter
-    auto setX(T x) -> void
-    {
-        x_ = x;
-    }
-    auto setY(T y) -> void
-    {
-        y_ = y;
-    }
-    auto setZ(T z) -> void
-    {
-        z_ = z;
-    }
-
-    // Getter
-    auto x() const -> T
+    auto x() const -> const T &
     {
         return x_;
     }
-    auto y() const -> T
+    auto y() const -> const T &
     {
         return y_;
     }
-    auto z() const -> T
+    auto z() const -> const T &
+    {
+        return z_;
+    }
+
+    auto x() -> T &
+    {
+        return x_;
+    }
+    auto y() -> T &
+    {
+        return y_;
+    }
+    auto z() -> T &
     {
         return z_;
     }

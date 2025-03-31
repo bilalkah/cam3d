@@ -51,6 +51,11 @@ include_directories(
 
 link_directories(${SDL3_LIBRARIES})
 
-add_executable(cam3d_example src/main.cpp)
+add_executable(
+    cam3d_example 
+    src/main.cpp
+    src/rasterizer.cpp
+    src/algorithm.cpp
+)
 target_include_directories(cam3d_example PRIVATE ${SDL3_INCLUDE_DIRS})
 target_link_libraries(cam3d_example PRIVATE SDL3::SDL3)
