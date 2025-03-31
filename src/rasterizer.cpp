@@ -30,7 +30,7 @@ auto Rasterizer::drawLine(const Vector3<float> &p_start, const Vector3<float> &p
     auto points = bresenham_->CalculateLine(start.x(), start.y(), end.x(), end.y());
     for (const auto &point : points)
     {
-        fb.setPixel(point.first, point.second, color);
+        fb.setPixel(point.first, point.second, p_start.z(), color);
     }
 };
 
@@ -50,6 +50,7 @@ auto Rasterizer::drawTriangle(const Vector3<float> &p1, const Vector3<float> &p2
     {
         uint32_t x_min = width_;
         uint32_t x_max = 0;
+        uint32_t z_min = std::numeric_limits<uint32_t>::max();
         // Find the intersection points with the triangle edges
         auto p1p2 = intersectionCalculator_->calculate2dSegmentIntersection(
             p1, p2, Vector3<float>(0, static_cast<float>(y), 0), Vector3<float>(width_, static_cast<float>(y), 0));
@@ -63,23 +64,26 @@ auto Rasterizer::drawTriangle(const Vector3<float> &p1, const Vector3<float> &p2
         {
             x_min = std::min(x_min, static_cast<uint32_t>(p1p2.second.x()));
             x_max = std::max(x_max, static_cast<uint32_t>(p1p2.second.x()));
+            z_min = std::min(z_min, static_cast<uint32_t>(p1p2.second.z()));
         }
         if (p2p3.first)
         {
             x_min = std::min(x_min, static_cast<uint32_t>(p2p3.second.x()));
             x_max = std::max(x_max, static_cast<uint32_t>(p2p3.second.x()));
+            z_min = std::min(z_min, static_cast<uint32_t>(p2p3.second.z()));
         }
         if (p3p1.first)
         {
             x_min = std::min(x_min, static_cast<uint32_t>(p3p1.second.x()));
             x_max = std::max(x_max, static_cast<uint32_t>(p3p1.second.x()));
+            z_min = std::min(z_min, static_cast<uint32_t>(p3p1.second.z()));
         }
         // Draw the horizontal line between the intersection points
         if (x_min < x_max)
         {
             for (uint32_t x = x_min; x <= x_max; ++x)
             {
-                fb.setPixel(x, y, color);
+                fb.setPixel(x, y, z_min, color);
             }
         }
     }

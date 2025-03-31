@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
     cam3d::ARGB color3(255, 255, 255, 255);                // Random pixel
 
     std::vector<cam3d::Vector3<float>> points{
-        cam3d::Vector3<float>(0.3f, -0.7f, 0.0f),    cam3d::Vector3<float>(1.0f, 1.0f, 1.0f),
-        cam3d::Vector3<float>(-1.0f, -1.0f, -1.0f), cam3d::Vector3<float>(0.7f, -0.5f, 2.0f),
-        cam3d::Vector3<float>(-0.7f, -1.0f, -2.0f), cam3d::Vector3<float>(0.5f, 0.5f, 0.5f),
-        cam3d::Vector3<float>(0.2f, 0.2f, 0.2f),
+        cam3d::Vector3<float>(0.3f, -0.7f, 1.0f),  cam3d::Vector3<float>(1.0f, 1.0f, 0.0f),
+        cam3d::Vector3<float>(-1.0f, -1.0f, 1.0f), cam3d::Vector3<float>(0.7f, -0.5f, 0.0f),
+        cam3d::Vector3<float>(0.7f, 0.4f, 1.0f),   cam3d::Vector3<float>(0.5f, 0.5f, 0.0f),
+        cam3d::Vector3<float>(0.2f, 0.2f, 0.0f),
     };
 
     cam3d::Vector3<float> start(-50.0f, 120.0f, 0.0f);
@@ -105,12 +105,12 @@ int main(int argc, char *argv[])
         }
         frameBuffer->clear(color);
         // Draw points
-        for (const auto &point : points)
-        {
-            cam3d::Vector3<float> projected = cam3d::utility::projectOrtographic(point, width, height);
-            frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()),
-            color2);
-        }
+        // for (const auto &point : points)
+        // {
+        //     cam3d::Vector3<float> projected = cam3d::utility::projectOrtographic(point, width, height);
+        //     frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()),
+        //     color2);
+        // }
 
         rasterizer->drawLine(cam3d::utility::projectOrtographic(points[1], width, height),
                              cam3d::utility::projectOrtographic(points[3], width, height), *frameBuffer, color2);
@@ -121,15 +121,15 @@ int main(int argc, char *argv[])
                                  cam3d::utility::projectOrtographic(points[3], width, height), *frameBuffer, color2);
 
         rasterizer->drawTriangle(cam3d::utility::projectOrtographic(points[2], width, height),
-                                 cam3d::utility::projectOrtographic(points[5], width, height),
-                                 cam3d::utility::projectOrtographic(points[0], width, height), *frameBuffer, color2);
-        cam3d::Vector3<float> projected = cam3d::utility::projectOrtographic(points[5], width, height);
-        frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color3);
-        projected = cam3d::utility::projectOrtographic(points[6], width, height);
-        frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color3);
-        projected = cam3d::utility::projectOrtographic(points[3], width, height);
-        frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color3);
-        // Convert to texture
+                                 cam3d::utility::projectOrtographic(points[4], width, height),
+                                 cam3d::utility::projectOrtographic(points[0], width, height), *frameBuffer, color3);
+        // cam3d::Vector3<float> projected = cam3d::utility::projectOrtographic(points[5], width, height);
+        // frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color3);
+        // projected = cam3d::utility::projectOrtographic(points[6], width, height);
+        // frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color3);
+        // projected = cam3d::utility::projectOrtographic(points[3], width, height);
+        // frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color3);
+        // // Convert to texture
         SDL_UpdateTexture(texture, NULL, frameBuffer->getBuffer().data(), width * sizeof(cam3d::ARGB));
         SDL_RenderTexture(renderer, texture, NULL, NULL);
 
