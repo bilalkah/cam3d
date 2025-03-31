@@ -17,6 +17,7 @@
 #include <frame_buffer.hpp>
 #include <memory>
 #include <random>
+#include <vector3.hpp>
 
 int main(int argc, char *argv[])
 {
@@ -65,6 +66,13 @@ int main(int argc, char *argv[])
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 255);
     cam3d::ARGB color;
+    cam3d::ARGB color2(dis(gen), dis(gen), dis(gen), 255); // Random pixel
+
+    std::vector<cam3d::Vector3<float>> points{
+        cam3d::Vector3<float>(0.0f, 0.0f, 0.0f),    cam3d::Vector3<float>(1.0f, 1.0f, 1.0f),
+        cam3d::Vector3<float>(-1.0f, -1.0f, -1.0f), cam3d::Vector3<float>(0.7f, -0.5f, 2.0f),
+        cam3d::Vector3<float>(-0.7f, -1.0f, -2.0f),
+    };
 
     bool running = true;
     SDL_Event event;
@@ -90,6 +98,12 @@ int main(int argc, char *argv[])
             tp = std::chrono::high_resolution_clock::now();
         }
         frameBuffer->clear(color);
+        // Draw points
+        for (const auto &point : points)
+        {
+            cam3d::Vector3<float> projected = cam3d::utility::projectOrtographic(point, width, height);
+            frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color2);
+        }
 
         // Convert to texture
         SDL_UpdateTexture(texture, NULL, frameBuffer->getBuffer().data(), width * sizeof(cam3d::ARGB));
