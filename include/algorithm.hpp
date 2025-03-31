@@ -14,10 +14,22 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <vector3.hpp>
 #include <vector>
 
 namespace cam3d
 {
+
+class IntersectionCalculator
+{
+  public:
+    auto calculate2dSegmentIntersection(const Vector3<float> &l1_start, const Vector3<float> &l1_end,
+                                        const Vector3<float> &l2_start,
+                                        const Vector3<float> &l2_end) -> std::pair<bool, Vector3<float>>;
+    auto calculate2dLineIntersection(const Vector3<float> &l1_start, const Vector3<float> &l1_end,
+                                     const Vector3<float> &l2_start,
+                                     const Vector3<float> &l2_end) -> std::pair<bool, Vector3<float>>;
+};
 
 class Bresenham
 {

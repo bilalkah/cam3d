@@ -14,7 +14,6 @@
 
 #include <cassert>
 #include <cmath>
-
 namespace cam3d
 {
 
@@ -56,6 +55,11 @@ template <typename T> class Vector3
     {
         return Vector3(y_ * other.z() - z_ * other.y(), z_ * other.x() - x_ * other.z(),
                        x_ * other.y() - y_ * other.x());
+    }
+
+    auto cross2d(const Vector3 &other) const -> T
+    {
+        return x_ * other.y() - y_ * other.x();
     }
 
     // Operator overloads

@@ -5,6 +5,61 @@
 namespace cam3d
 {
 
+/// @note Intersection Calculator algorithm
+/// ------------------------------------------------------------------------------  ///
+
+auto IntersectionCalculator::calculate2dSegmentIntersection(
+    const Vector3<float> &l1_start, const Vector3<float> &l1_end, const Vector3<float> &l2_start,
+    const Vector3<float> &l2_end) -> std::pair<bool, Vector3<float>>
+{
+    auto det = (l1_end - l1_start).cross2d(l2_end - l2_start);
+
+    if (det == 0)
+    {
+        return {false, Vector3<float>(0, 0, 0)};
+    }
+
+    auto t = (l2_start - l1_start).cross2d(l2_end - l2_start) / det;
+    auto u = (l2_start - l1_start).cross2d(l1_end - l1_start) / det;
+
+    if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
+    {
+        // Intersection point
+        auto intersection = l1_start + (l1_end - l1_start) * t;
+        return {true, intersection};
+    }
+
+    return {false, Vector3<float>(0, 0, 0)}; // No intersection
+}
+
+auto IntersectionCalculator::calculate2dLineIntersection(const Vector3<float> &l1_start, const Vector3<float> &l1_end,
+                                                         const Vector3<float> &l2_start, const Vector3<float> &l2_end)
+    -> std::pair<bool, Vector3<float>>
+{
+    // Line represented as ax + by = c
+    // l1: a1x + b1y = c1
+    auto a1 = l1_end.y() - l1_start.y();
+    auto b1 = l1_end.x() - l1_start.x();
+    auto c1 = a1 * l1_start.x() - b1 * l1_start.y();
+
+    // l2: a2x + b2y = c2
+    auto a2 = l2_end.y() - l2_start.y();
+    auto b2 = l2_end.x() - l2_start.x();
+    auto c2 = a2 * l2_start.x() - b2 * l2_start.y();
+
+    auto det = a1 * b2 - a2 * b1;
+
+    if (det == 0)
+    {
+        return {false, Vector3<float>(0, 0, 0)};
+    }
+
+    auto x = (b2 * c1 - b1 * c2) / det;
+    auto y = (a1 * c2 - a2 * c1) / det;
+
+    return {true, Vector3<float>(x, y, 0)};
+}
+
 /// @note Bresenham algorithm
 /// ------------------------------------------------------------------------------  ///
 
