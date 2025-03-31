@@ -19,7 +19,6 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=x86-64-v3")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=x86-64-v3")
 endif()
 
 # External folder for third-party packages
@@ -33,7 +32,7 @@ set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
 # SDL3 setup
 set(SDL3_DIR ${EXTERNAL_DIR}/SDL3)
 if(NOT EXISTS ${SDL3_DIR})
-    message(STATUS "SDL3 submodule not found. Cloning...")
+    message(STATUS "SDL3 submodule not found. Updating...")
     execute_process(
         COMMAND git submodule update --init --recursive
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -45,7 +44,11 @@ add_subdirectory(${SDL3_DIR} EXCLUDE_FROM_ALL)
 set(SDL3_INCLUDE_DIRS ${SDL3_DIR}/include)
 set(SDL3_LIBRARIES ${PROJECT_BINARY_DIR}/${SDL3_DIR})
 
-include_directories(${SDL3_INCLUDE_DIRS})
+include_directories(
+    ${SDL3_INCLUDE_DIRS}
+    include
+)
+
 link_directories(${SDL3_LIBRARIES})
 
 add_executable(cam3d_example src/main.cpp)
