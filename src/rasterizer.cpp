@@ -5,9 +5,20 @@
 namespace cam3d
 {
 
-Rasterizer::Rasterizer(size_t width, size_t height) : width_(width), height_(height)
+Rasterizer::Rasterizer(uint32_t width, uint32_t height)
+    : width_(width), height_(height), aspect_ratio_(static_cast<float>(width) / height), fov_(60),
+      focal_length_(1 / std::tan(fov_ / 2)), near_plane_(0.1f), far_plane_(1000.0f)
 {
     assert(width > 0 && height > 0 && "Width and height must be greater than zero");
+
+    // Initialize the projection matrix
+    projection_matrix_ =
+        std::array<std::array<float, 4>, 4>{{{focal_length_ / aspect_ratio_, 0, 0, 0},
+                                             {0, focal_length_, 0, 0},
+                                             {0, 0, (far_plane_ + near_plane_) / (near_plane_ - far_plane_),
+                                              (2 * far_plane_ * near_plane_) / (near_plane_ - far_plane_)},
+                                             {0, 0, -1, 0}}};
+
     clipper_ = std::make_unique<CohenSutherland>(width, height);
     bresenham_ = std::make_unique<Bresenham>();
     intersectionCalculator_ = std::make_unique<IntersectionCalculator>();

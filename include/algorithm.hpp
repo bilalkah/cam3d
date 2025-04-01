@@ -1,6 +1,6 @@
 /**
  * @file cohen_sutherland_algorithm.hpp
- * @author https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
+ * @author Bilal Kahraman (kahramannbilal@gmail.com)
  * @brief
  * @version 0.1
  * @date 2025-03-31
@@ -31,24 +31,26 @@ class IntersectionCalculator
                                      const Vector3<float> &l2_end) -> std::pair<bool, Vector3<float>>;
 };
 
+// https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 class Bresenham
 {
   public:
     auto CalculateLine(float &x0, float &y0, float &x1, float &y1) -> std::vector<std::pair<uint32_t, uint32_t>>;
 };
 
+// https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
 class CohenSutherland
 {
   public:
-    CohenSutherland(size_t width, size_t height);
+    CohenSutherland(uint32_t width, uint32_t height);
     ~CohenSutherland() = default;
 
   public:
     auto CohenSutherlandLineClip(float &x0, float &y0, float &x1, float &y1) -> bool;
 
   private:
-    size_t width_minus_1_;
-    size_t height_minus_1_;
+    uint32_t width_minus_1_;
+    uint32_t height_minus_1_;
 
     typedef int OutCode;
 

@@ -12,8 +12,10 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
+#include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <iostream>
 namespace cam3d
 {
 
@@ -155,26 +157,6 @@ template <typename T> class Vector3
   private:
     T x_, y_, z_;
 };
-
-namespace utility
-{
-
-/**
- * @brief Projects a 3D vector to 2D using orthographic projection
- *
- * @tparam T The type of the vector components (e.g., float, double)
- * @param v The 3D vector to project. Range [-1, 1] for x and y.
- * @param s_width The width of the screen
- * @param s_height The height of the screen
- * @return Vector3<T> The projected 2D vector
- */
-template <typename T> auto projectOrtographic(const Vector3<T> &v, int s_width, int s_height) -> Vector3<T>
-{
-    T x = ((v.x() + 1) / 2) * (s_width - 1);
-    T y = ((1 - v.y()) / 2) * (s_height - 1);
-    return Vector3<T>(x, y, 0);
-};
-} // namespace utility
 
 } // namespace cam3d
 

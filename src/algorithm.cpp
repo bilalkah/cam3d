@@ -135,7 +135,8 @@ auto Bresenham::CalculateLine(float &x0, float &y0, float &x1, float &y1) -> std
 /// @note Cohen–Sutherland clipping algorithm
 /// ------------------------------------------------------------------------------  ///
 
-CohenSutherland::CohenSutherland(size_t width, size_t height) : width_minus_1_(width - 1), height_minus_1_(height - 1)
+CohenSutherland::CohenSutherland(uint32_t width, uint32_t height)
+    : width_minus_1_(width - 1), height_minus_1_(height - 1)
 {
     // Constructor
 }

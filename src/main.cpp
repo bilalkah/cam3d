@@ -77,6 +77,18 @@ int main(int argc, char *argv[])
         cam3d::Vector3<float>(0.2f, 0.2f, 0.0f),
     };
 
+    std::vector<cam3d::Vector3<float>> pointsv2{
+        cam3d::Vector3<float>(150, 38, 43),
+        cam3d::Vector3<float>(352, 400, 150),
+        cam3d::Vector3<float>(28, 389, 17),
+    };
+
+    std::vector<cam3d::Vector3<float>> test_triangle{
+        cam3d::Vector3<float>(-1.0f, -0.5f, 0.5f), // Vertex 1
+        cam3d::Vector3<float>(0.5f, 1.0f, 0.5f),   // Vertex 2
+        cam3d::Vector3<float>(1.0f, -0.5f, 0.5f)   // Vertex 3
+    };
+
     cam3d::Vector3<float> start(-50.0f, 120.0f, 0.0f);
     cam3d::Vector3<float> end(900.0f, 200.0f, 0.0f);
 
@@ -111,18 +123,27 @@ int main(int argc, char *argv[])
         //     frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()),
         //     color2);
         // }
+        // cam3d::Vector3<float> p1(0, height-1, 0.0f);
+        // cam3d::Vector3<float> p2(width-1, height-1, 0.0f);
+        // rasterizer->drawLine(p1, p2, *frameBuffer, color2);
+        // rasterizer->drawLine(pointsv2[2], pointsv2[2] + cam3d::Vector3<float>(100, 0, 0), *frameBuffer, color2);
 
-        rasterizer->drawLine(cam3d::utility::projectOrtographic(points[1], width, height),
-                             cam3d::utility::projectOrtographic(points[3], width, height), *frameBuffer, color2);
+        // rasterizer->drawLine(start, end, *frameBuffer, color2);
+        // rasterizer->drawTriangle(cam3d::utility::projectOrtographic(points[5], width, height),
+        //                          cam3d::utility::projectOrtographic(points[6], width, height),
+        //                          cam3d::utility::projectOrtographic(points[3], width, height), *frameBuffer, color2);
 
-        rasterizer->drawLine(start, end, *frameBuffer, color2);
-        rasterizer->drawTriangle(cam3d::utility::projectOrtographic(points[5], width, height),
-                                 cam3d::utility::projectOrtographic(points[6], width, height),
-                                 cam3d::utility::projectOrtographic(points[3], width, height), *frameBuffer, color2);
+        // rasterizer->drawTriangle(cam3d::utility::projectOrtographic(points[2], width, height),
+        //                          cam3d::utility::projectOrtographic(points[4], width, height),
+        //                          cam3d::utility::projectOrtographic(points[0], width, height), *frameBuffer, color3);
 
-        rasterizer->drawTriangle(cam3d::utility::projectOrtographic(points[2], width, height),
-                                 cam3d::utility::projectOrtographic(points[4], width, height),
-                                 cam3d::utility::projectOrtographic(points[0], width, height), *frameBuffer, color3);
+        // rasterizer->drawTriangle(pointsv2[0], pointsv2[1], pointsv2[2], *frameBuffer, color3);
+
+        // // Draw triangle with perspective projection
+        rasterizer->drawTriangle(rasterizer->projectBasicPerspective(test_triangle[0]),
+                                 rasterizer->projectBasicPerspective(test_triangle[1]),
+                                 rasterizer->projectBasicPerspective(test_triangle[2]), *frameBuffer, color3);
+
         // cam3d::Vector3<float> projected = cam3d::utility::projectOrtographic(points[5], width, height);
         // frameBuffer->setPixel(static_cast<uint32_t>(projected.x()), static_cast<uint32_t>(projected.y()), color3);
         // projected = cam3d::utility::projectOrtographic(points[6], width, height);
