@@ -12,6 +12,7 @@
 #ifndef FRAME_BUFFER_H
 #define FRAME_BUFFER_H
 
+#include <X11/X.h>
 #include <cassert>
 #include <cstdint>
 #include <limits>
@@ -42,6 +43,19 @@ struct ARGB
 };
 
 using BufferARGB = std::vector<ARGB>;
+
+struct COLOR
+{
+    ARGB RED{255, 255, 0, 0};
+    ARGB GREEN{255, 0, 255, 0};
+    ARGB BLUE{255, 0, 0, 255};
+    ARGB WHITE{255, 255, 255, 255};
+    ARGB BLACK{255, 0, 0, 0};
+    ARGB YELLOW{255, 255, 255, 0};
+    ARGB CYAN{255, 0, 255, 255};
+    ARGB MAGENTA{255, 255, 0, 255};
+    ARGB GRAY{255, 128, 128, 128};
+};
 
 class FrameBuffer
 {
