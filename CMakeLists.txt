@@ -29,20 +29,18 @@ endif()
 
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
 
-# SDL3 setup
-set(SDL3_DIR ${EXTERNAL_DIR}/SDL3)
-if(NOT EXISTS ${SDL3_DIR})
-    message(STATUS "SDL3 submodule not found. Updating...")
-    execute_process(
-        COMMAND git submodule update --init --recursive
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    )
-endif()
+# Fetch SDL3 with FetchContent
+include(FetchContent)
 
-add_subdirectory(${SDL3_DIR} EXCLUDE_FROM_ALL)
+FetchContent_Declare(
+    SDL3
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL
+    GIT_TAG release-3.2.10
+)
 
-set(SDL3_INCLUDE_DIRS ${SDL3_DIR}/include)
-set(SDL3_LIBRARIES ${PROJECT_BINARY_DIR}/${SDL3_DIR})
+FetchContent_MakeAvailable(SDL3)
+
+set(SDL3_INCLUDE_DIRS ${SDL3_SOURCE_DIR}/include)
 
 include_directories(
     ${SDL3_INCLUDE_DIRS}
