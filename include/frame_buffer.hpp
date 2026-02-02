@@ -62,7 +62,7 @@ class FrameBuffer
   public:
     FrameBuffer(uint32_t width, uint32_t height)
         : width_(width), height_(height), total_size_(width * height), buffer_(total_size_, ARGB()),
-          depth_buffer_(total_size_, std::numeric_limits<uint32_t>::max())
+          depth_buffer_(total_size_, std::numeric_limits<float>::max())
     {
         assert(width > 0 && height > 0 && "Width and height must be greater than zero");
     }
@@ -122,12 +122,12 @@ class FrameBuffer
         return buffer_;
     }
 
-    auto getDepthBuffer() -> std::vector<uint32_t> &
+    auto getDepthBuffer() -> std::vector<float> &
     {
         return depth_buffer_;
     }
 
-    auto getDepthBuffer() const -> const std::vector<uint32_t> &
+    auto getDepthBuffer() const -> const std::vector<float> &
     {
         return depth_buffer_;
     }
@@ -137,7 +137,7 @@ class FrameBuffer
     uint32_t height_;
     size_t total_size_;
     BufferARGB buffer_;
-    std::vector<uint32_t> depth_buffer_;
+    std::vector<float> depth_buffer_;
 }; // FrameBuffer class definition
 
 } // namespace cam3d
